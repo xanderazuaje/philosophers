@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:22:33 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/07/21 04:28:25 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:48:17 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	parse_mandatory(char **argv, t_philo *philo, int *total, const int argc)
 		philo->max_eat_count = -1;
 }
 
-int	parse_input(int argc, char **argv, t_philo **philos, int *died)
+int	parse_input(int argc, char **argv, t_philo **philos, int *died, pthread_mutex_t *print_mutex)
 {
 	int	total_philo;
 	int	i;
@@ -55,6 +55,7 @@ int	parse_input(int argc, char **argv, t_philo **philos, int *died)
 		(*philos)[i].number = i + 1;
 		(*philos)[i].someone_died = died;
 		parse_mandatory(argv, &(*philos)[i], &total_philo, argc);
+		(*philos)[i].print_mutex = print_mutex;
 		i++;
 	}
 	if (total_philo == 0)
