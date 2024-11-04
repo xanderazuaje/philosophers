@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 05:31:45 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/10/12 10:14:52 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:06:13 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ int must_die(t_philo *philo)
 	if (i != 1)
 	{
 		i = philo->total_eat_count >= philo->max_eat_count;
-		dprintf(2, "%ld\n", i);
 	}
 	pthread_mutex_unlock(&philo->mutex);
 	return (i);
@@ -267,23 +266,13 @@ void	create_threads(int total, pthread_t *philos_thread, t_philo *philos)
 		i++;
 	}
 }
-
-typedef struct s_program {
-	pthread_t		*philos_thread;
-	t_philo			*philos;
-	t_fork			*forks;
-	pthread_mutex_t print_mutex;
-	time_t			started;
-} t_program;
-
 int	main(int argc, char **argv)
 {
 	int				total_philos;
 	t_program		program;
-	int				died;
 
-	total_philos = parse_input(argc, argv, &program.philos, &died, &program.print_mutex, &program.started);
-	died = 0;
+	total_philos = parse_input(argc, argv, &program);
+	program.died = 0;
 	if (total_philos == 0)
 		return (1);
 	if (!init_structs(&program.forks, &program.philos_thread, total_philos))

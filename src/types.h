@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:25:16 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/10/12 10:22:35 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/04 18:05:50 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,15 @@ typedef struct s_philo
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*print_mutex;
 }	t_philo;
+
+
+typedef struct s_program {
+	pthread_t		*philos_thread;
+	t_philo			*philos;
+	t_fork			*forks;
+	pthread_mutex_t print_mutex;
+	time_t			started;
+	int				died;
+} t_program;
 
 #endif
