@@ -165,9 +165,7 @@ int must_die(t_philo *philo)
 	pthread_mutex_lock(&philo->mutex);
 	i = get_time() - philo->time_since_eat > philo->times.die;
 	if (i != 1)
-	{
-		i = philo->total_eat_count >= philo->max_eat_count;
-	}
+		i = philo->total_eat_count >= philo->max_eat_count && philo->max_eat_count != -1;
 	pthread_mutex_unlock(&philo->mutex);
 	return (i);
 }
