@@ -14,6 +14,11 @@
 
 void	parse_mandatory(char **argv, t_philo *philo, int *total, const int argc)
 {
+	
+
+
+
+
 	philo->times.die = ft_atoi(argv[2]);
 	if (philo->times.die == -1)
 		*total = 0;
@@ -39,7 +44,7 @@ int	parse_input(int argc, char **argv, t_program *program)
 	int	i;
 
 	i = 0;
-	if (argc < 5)
+	if (argc < 5 || argc > 6)
 	{
 		write(2, "invalid input.\n", 15);
 		return (0);
