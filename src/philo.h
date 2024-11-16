@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 05:32:26 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/14 11:30:07 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:13:23 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include "assert_input/parse_input.h"
 # include "types.h"
 
-
 int		destroy_forks(t_fork **forks, int n);
 void	throw_forks(t_philo *philo);
 int		is_fork_used(t_fork *fork);
@@ -34,6 +33,7 @@ int		init_structs(t_fork **forks, pthread_t **threads, int n);
 void	*eat(void *params);
 void	*sleep_philo(void *params);
 int		must_die(t_philo *philo);
+void	kill(t_philo *philo);
 int		check_state(t_philo *philo, t_states state);
 int		can_eat(t_philo *philo);
 void	*philosopher(void *params);

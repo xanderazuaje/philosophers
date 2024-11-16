@@ -6,21 +6,11 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 05:31:45 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/14 11:32:15 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:13:13 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	did_someone_died(t_philo *philo)
-{
-	int	i;
-
-	pthread_mutex_lock(&philo->mutex);
-	i = *(philo->someone_died) == 1;
-	pthread_mutex_unlock(&philo->mutex);
-	return (i);
-}
 
 int	init_structs(t_fork **forks, pthread_t **threads, const int n)
 {
@@ -45,102 +35,6 @@ int	init_structs(t_fork **forks, pthread_t **threads, const int n)
 	return (1);
 }
 
-
-int	check_state(t_philo *philo, t_states state)
-{
-	time_t i;
-
-	pthread_mutex_lock(&philo->mutex);
-	i = philo->state == state;
-	pthread_mutex_unlock(&philo->mutex);
-	return (i);
-}
-
-int	can_eat(t_philo *philo)
-{
-	time_t i;
-
-	i = philo->left_fork->philo == philo && philo->right_fork->philo == philo && philo->state != waiting && philo->left_fork != philo->right_fork;
-	if (philo->max_eat_count > -1 && philo->total_eat_count >= philo->max_eat_count)
-		return (-1);
-	return (i);
-}
-
-
-void kill(t_philo *philo)
-{
-	pthread_mutex_lock(philo->print_mutex);
-	if (!did_someone_died(philo))
-		printf("%ld: %d died\n", get_time() - *philo->started, philo->number);
-	pthread_mutex_unlock(philo->print_mutex);
-	pthread_mutex_lock(&philo->mutex);
-	*philo->someone_died = 1;
-	pthread_mutex_unlock(&philo->mutex);
-}
-
-int try_to_eat(t_philo *philo)
-{
-	int can_eat_now;
-
-	grab_forks_if_can(philo);
-	can_eat_now = can_eat(philo);
-	if (can_eat_now == 1)
-		eat(philo);
-	else if (can_eat_now == -1)
-	{
-		throw_forks(philo);
-		return (0);
-	}
-	return (1);
-}
-
-void	*philosopher(void *params)
-{
-	t_philo		*philo;
-
-	philo = (t_philo *) params;
-	philo->time_since_eat = get_time();
-	philo->state = thinking;
-	pthread_mutex_init(&philo->mutex, NULL);
-	if (philo->number % 2 == 0)
-		fake_sleep(philo->times.eat);
-	while (!did_someone_died(philo))
-	{
-		if (must_die(philo))
-		{
-			kill(philo);
-			break;
-		}
-		if (check_state(philo, thinking))
-			think(philo);
-		else if (!did_someone_died(philo) && check_state(philo, eating))
-		{
-			if (!try_to_eat(philo))
-				return NULL;
-		}
-		else if (!did_someone_died(philo) && check_state(philo, sleeping))
-			sleep_philo(philo);
-	}
-	pthread_mutex_destroy(&philo->mutex);
-	return (NULL);
-}
-
-void	assign_forks(const int total_philos, t_philo *philos, t_fork *forks)
-{
-	int	i;
-
-	i = 0;
-	while (i < total_philos)
-	{
-		if (i == 0)
-			philos[i].left_fork = &forks[total_philos - 1];
-		else
-			philos[i].left_fork = &forks[i - 1];
-		philos[i].right_fork = &forks[i];
-		i++;
-	}
-}
-
 void	create_threads(int total, pthread_t *philos_thread, t_philo *philos)
 {
 	int	i;
@@ -158,6 +52,7 @@ void	create_threads(int total, pthread_t *philos_thread, t_philo *philos)
 		i++;
 	}
 }
+
 int	main(int argc, char **argv)
 {
 	int				total_philos;

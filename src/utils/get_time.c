@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:22:32 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/14 11:26:32 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:16:38 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,3 @@ time_t	get_time(void)
 	gettimeofday(&tv, 0);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
-

@@ -6,10 +6,9 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:22:42 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/14 11:25:31 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:16:15 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "utils.h"
 
@@ -23,4 +22,3 @@ void	fake_sleep(time_t time)
 		usleep(1);
 	}
 }
-

@@ -10,6 +10,8 @@ OBJ_DIR := obj
 # Source files
 SRC_FILES := $(SRC_DIR)/main.c \
 		$(SRC_DIR)/forks_stuff.c \
+		$(SRC_DIR)/philosopher.c \
+		$(SRC_DIR)/state_checker.c \
 		$(SRC_DIR)/states.c \
 		$(SRC_DIR)/utils/fake_sleep.c \
 		$(SRC_DIR)/utils/ft_atoi.c \
