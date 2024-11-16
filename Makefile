@@ -9,7 +9,11 @@ OBJ_DIR := obj
 
 # Source files
 SRC_FILES := $(SRC_DIR)/main.c \
+		$(SRC_DIR)/forks_stuff.c \
+		$(SRC_DIR)/states.c \
+		$(SRC_DIR)/utils/fake_sleep.c \
 		$(SRC_DIR)/utils/ft_atoi.c \
+		$(SRC_DIR)/utils/get_time.c \
 		$(SRC_DIR)/assert_input/parse_input.c \
 
 # Object files

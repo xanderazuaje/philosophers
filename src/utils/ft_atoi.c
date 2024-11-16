@@ -15,7 +15,7 @@
 
 #include "utils.h"
 
-int	check_input(const char *str)
+int	check_valid_integer(const char *str)
 {
 	size_t	i;
 
@@ -40,7 +40,7 @@ int	ft_atoi(const char *str)
 
 	res = 0;
 	i = 0;
-	if (!check_input(str))
+	if (!check_valid_integer(str))
 		return (-1);
 	while (str[i])
 	{

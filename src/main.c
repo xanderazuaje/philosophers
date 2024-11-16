@@ -6,16 +6,15 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 05:31:45 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/11 12:28:25 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/14 11:32:15 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-int did_someone_died(t_philo *philo)
+int	did_someone_died(t_philo *philo)
 {
-	int i;
+	int	i;
 
 	pthread_mutex_lock(&philo->mutex);
 	i = *(philo->someone_died) == 1;
@@ -23,28 +22,9 @@ int did_someone_died(t_philo *philo)
 	return (i);
 }
 
-time_t get_time()
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, 0);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-void fake_sleep(time_t time)
-{
-	time_t started;
-
-	started = get_time();
-	while (get_time() - started < time)
-	{
-		usleep(1);
-	}
-}
-
 int	init_structs(t_fork **forks, pthread_t **threads, const int n)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	*forks = (t_fork *) malloc(n * sizeof(t_fork));
@@ -65,115 +45,8 @@ int	init_structs(t_fork **forks, pthread_t **threads, const int n)
 	return (1);
 }
 
-int	destroy_forks(t_fork **forks, const int n)
-{
-	int i;
 
-	i = 0;
-	while (i < n)
-	{
-		pthread_mutex_destroy(&(*forks)[i].mutex);
-		i++;
-	}
-	return (1);
-}
-
-void throw_forks(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->left_fork->mutex);
-	philo->left_fork->philo = NULL;
-	pthread_mutex_unlock(&philo->left_fork->mutex);
-	pthread_mutex_lock(&philo->right_fork->mutex);
-	philo->right_fork->philo = NULL;
-	pthread_mutex_unlock(&philo->right_fork->mutex);
-}
-
-void *eat(void *params)
-{
-	t_philo *philo;
-
-	philo = (t_philo *)params;
-	if (!did_someone_died(philo))
-	{
-		pthread_mutex_lock(philo->print_mutex);
-		printf("%ld: %d is eating\n", get_time() - *philo->started, philo->number);
-		pthread_mutex_unlock(philo->print_mutex);
-	}
-	else
-		return (NULL);
-	pthread_mutex_lock(&philo->mutex);
-	philo->time_since_eat = get_time();
-	pthread_mutex_unlock(&philo->mutex);
-	fake_sleep(philo->times.eat);
-	throw_forks(philo);
-	pthread_mutex_lock(&philo->mutex);
-	philo->state = sleeping;
-	if (philo->max_eat_count != -1)
-	{
-		philo->total_eat_count++;
-	}
-	pthread_mutex_unlock(&philo->mutex);
-	return (NULL);
-}
-
-void *sleep_philo(void *params)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)params;
-	pthread_mutex_lock(philo->print_mutex);
-	if (!did_someone_died(philo))
-		printf("%ld: %d is sleeping\n", get_time() - *philo->started, philo->number);
-	pthread_mutex_unlock(philo->print_mutex);
-	fake_sleep(philo->times.sleep);
-	pthread_mutex_lock(&philo->mutex);
-	philo->state = thinking;
-	pthread_mutex_unlock(&philo->mutex);
-	return (NULL);
-}
-
-int is_fork_used(t_fork *fork)
-{
-	int i;
-
-	pthread_mutex_lock(&fork->mutex);
-	i = fork->philo == NULL;
-	pthread_mutex_unlock(&fork->mutex);
-
-	return (i);
-}
-
-void grab_forks_if_can(t_philo *philo)
-{
-	if (is_fork_used(philo->left_fork) && !did_someone_died(philo))
-	{
-		pthread_mutex_lock(philo->print_mutex);
-		pthread_mutex_unlock(philo->print_mutex);
-		pthread_mutex_lock(&philo->left_fork->mutex);
-		philo->left_fork->philo = philo;
-		pthread_mutex_unlock(&philo->left_fork->mutex);
-	}
-	if (is_fork_used(philo->right_fork) && !did_someone_died(philo))
-	{
-		pthread_mutex_lock(philo->print_mutex);
-		pthread_mutex_unlock(philo->print_mutex);
-		pthread_mutex_lock(&philo->right_fork->mutex);
-		philo->right_fork->philo = philo;
-		pthread_mutex_unlock(&philo->right_fork->mutex);
-	}
-}
-
-int must_die(t_philo *philo)
-{
-	time_t i;
-
-	pthread_mutex_lock(&philo->mutex);
-	i = get_time() - philo->time_since_eat > philo->times.die;
-	pthread_mutex_unlock(&philo->mutex);
-	return (i);
-}
-
-int check_state(t_philo *philo, t_states state)
+int	check_state(t_philo *philo, t_states state)
 {
 	time_t i;
 
@@ -183,7 +56,7 @@ int check_state(t_philo *philo, t_states state)
 	return (i);
 }
 
-int can_eat(t_philo *philo)
+int	can_eat(t_philo *philo)
 {
 	time_t i;
 
@@ -192,10 +65,38 @@ int can_eat(t_philo *philo)
 		return (-1);
 	return (i);
 }
+
+
+void kill(t_philo *philo)
+{
+	pthread_mutex_lock(philo->print_mutex);
+	if (!did_someone_died(philo))
+		printf("%ld: %d died\n", get_time() - *philo->started, philo->number);
+	pthread_mutex_unlock(philo->print_mutex);
+	pthread_mutex_lock(&philo->mutex);
+	*philo->someone_died = 1;
+	pthread_mutex_unlock(&philo->mutex);
+}
+
+int try_to_eat(t_philo *philo)
+{
+	int can_eat_now;
+
+	grab_forks_if_can(philo);
+	can_eat_now = can_eat(philo);
+	if (can_eat_now == 1)
+		eat(philo);
+	else if (can_eat_now == -1)
+	{
+		throw_forks(philo);
+		return (0);
+	}
+	return (1);
+}
+
 void	*philosopher(void *params)
 {
 	t_philo		*philo;
-	int can_eat_now;
 
 	philo = (t_philo *) params;
 	philo->time_since_eat = get_time();
@@ -207,35 +108,15 @@ void	*philosopher(void *params)
 	{
 		if (must_die(philo))
 		{
-			pthread_mutex_lock(philo->print_mutex);
-			if (!did_someone_died(philo))
-				printf("%ld: %d died\n", get_time() - *philo->started, philo->number);
-			pthread_mutex_unlock(philo->print_mutex);
-			pthread_mutex_lock(&philo->mutex);
-			*philo->someone_died = 1;
-			pthread_mutex_unlock(&philo->mutex);
+			kill(philo);
 			break;
 		}
 		if (check_state(philo, thinking))
-		{
-			pthread_mutex_lock(philo->print_mutex);
-			if (!did_someone_died(philo))
-				printf("%ld: %d is thinking\n", get_time() - *philo->started, philo->number);
-			pthread_mutex_unlock(philo->print_mutex);
-			philo->state = eating;
-		}
+			think(philo);
 		else if (!did_someone_died(philo) && check_state(philo, eating))
 		{
-			grab_forks_if_can(philo);
-			can_eat_now = can_eat(philo);
-			if (can_eat_now == 1)
-				eat(philo);
-			else if (can_eat_now == -1)
-			{
-				throw_forks(philo);
-				return (NULL);
-			}
-
+			if (!try_to_eat(philo))
+				return NULL;
 		}
 		else if (!did_someone_died(philo) && check_state(philo, sleeping))
 			sleep_philo(philo);

@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:22:33 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/04 18:09:29 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:22:46 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 void	parse_mandatory(char **argv, t_philo *philo, int *total, const int argc)
 {
-	
-
-
-
-
 	philo->times.die = ft_atoi(argv[2]);
 	if (philo->times.die == -1)
 		*total = 0;
@@ -38,22 +33,31 @@ void	parse_mandatory(char **argv, t_philo *philo, int *total, const int argc)
 		philo->max_eat_count = -1;
 }
 
+int	check_input(int argc, char **argv, t_program *program, int *total_philo)
+{
+	if (argc < 5 || argc > 6)
+	{
+		write(2, "invalid input.\n", 15);
+		return (0);
+	}
+	*total_philo = ft_atoi(argv[1]);
+	if (*total_philo == -1)
+		*total_philo = 0;
+	program->philos = (t_philo *)malloc(sizeof(t_philo) * *total_philo);
+	if (program->philos == NULL)
+	{
+		return (0);
+	}
+	return (1);
+}
+
 int	parse_input(int argc, char **argv, t_program *program)
 {
 	int	total_philo;
 	int	i;
 
 	i = 0;
-	if (argc < 5 || argc > 6)
-	{
-		write(2, "invalid input.\n", 15);
-		return (0);
-	}
-	total_philo = ft_atoi(argv[1]);
-	if (total_philo == -1)
-		total_philo = 0;
-	program->philos = (t_philo *)malloc(sizeof(t_philo) * total_philo);
-	if (program->philos == NULL)
+	if (!check_input(argc, argv, program, &total_philo))
 		return (0);
 	while (i < total_philo && total_philo != 0)
 	{
