@@ -6,19 +6,25 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:22:42 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/16 22:16:15 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:31:38 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "../philo.h"
 
-void	fake_sleep(time_t time)
+void	fake_sleep(t_philo *philo, time_t time, int is_eating)
 {
 	time_t	started;
 
 	started = get_time();
 	while (get_time() - started < time)
 	{
+		if (!is_eating && must_die(philo))
+		{
+			kill(philo);
+			return;
+		}
 		usleep(1);
 	}
 }

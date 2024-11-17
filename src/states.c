@@ -29,7 +29,7 @@ void	*eat(void *params)
 	pthread_mutex_lock(&philo->mutex);
 	philo->time_since_eat = get_time();
 	pthread_mutex_unlock(&philo->mutex);
-	fake_sleep(philo->times.eat);
+	fake_sleep(philo, philo->times.eat, 1);
 	throw_forks(philo);
 	pthread_mutex_lock(&philo->mutex);
 	philo->state = sleeping;
@@ -51,7 +51,7 @@ void	*sleep_philo(void *params)
 		printf("%ld: %d is sleeping\n",
 			get_time() - *philo->started, philo->number);
 	pthread_mutex_unlock(philo->print_mutex);
-	fake_sleep(philo->times.sleep);
+	fake_sleep(philo, philo->times.sleep, 0);
 	pthread_mutex_lock(&philo->mutex);
 	philo->state = thinking;
 	pthread_mutex_unlock(&philo->mutex);

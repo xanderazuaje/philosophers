@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 21:56:45 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/16 21:59:11 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:32:18 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	*philosopher(void *params)
 
 	init_philo(params, &philo);
 	if (philo->number % 2 == 0)
-		fake_sleep(philo->times.eat);
+		fake_sleep(philo, philo->times.eat, 0);
 	while (!did_someone_died(philo))
 	{
 		if (must_die(philo))
