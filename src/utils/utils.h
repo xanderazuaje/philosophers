@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 06:42:10 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/17 13:30:15 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:45:10 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <ctype.h>
 # include <limits.h>
 # include "../types.h"
-
 
 int		ft_atoi(const char *str);
 time_t	get_time(void);

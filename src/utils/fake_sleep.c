@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:22:42 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/17 13:31:38 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:45:00 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	fake_sleep(t_philo *philo, time_t time)
 		if (must_die(philo))
 		{
 			kill(philo);
-			return;
+			return ;
 		}
 		usleep(1);
 	}
