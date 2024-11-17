@@ -64,6 +64,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!init_structs(&program.forks, &program.philos_thread, total_philos))
 		return (1);
+	pthread_mutex_init(&program.print_mutex, NULL);
 	assign_forks(total_philos, program.philos, program.forks);
 	program.started = get_time();
 	create_threads(total_philos, program.philos_thread, program.philos);
