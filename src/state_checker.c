@@ -35,8 +35,16 @@ int	check_state(t_philo *philo, t_states state)
 int	can_eat(t_philo *philo)
 {
 	time_t	i;
+	int		l_is_taken;
+	int		r_is_taken;
 
-	i = philo->left_fork->philo == philo && philo->right_fork->philo == philo
+	pthread_mutex_lock(&philo->left_fork->mutex);
+	l_is_taken = philo->left_fork->philo == philo;
+	pthread_mutex_unlock(&philo->left_fork->mutex);
+	pthread_mutex_lock(&philo->right_fork->mutex);
+	r_is_taken = philo->right_fork->philo == philo;
+	pthread_mutex_unlock(&philo->right_fork->mutex);
+	i = l_is_taken && r_is_taken
 		&& philo->state != waiting && philo->left_fork != philo->right_fork;
 	if (philo->max_eat_count > -1
 		&& philo->total_eat_count >= philo->max_eat_count)

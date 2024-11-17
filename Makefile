@@ -1,7 +1,7 @@
 # Compiler and flags
-CC := gcc
-CFLAGS := -Wall -Wextra -Werror -pthread -g3
-LDFLAGS := #-fsanitize=address
+CC := clang
+CFLAGS := -Wall -Wextra -Werror -g3
+LDFLAGS := -fsanitize=thread
 
 # Directories
 SRC_DIR := src
