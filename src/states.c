@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:21:25 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/16 22:14:36 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:03:56 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ int	must_die(t_philo *philo)
 {
 	time_t	i;
 
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(philo->death_mutex);
 	i = get_time() - philo->time_since_eat > philo->times.die;
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(philo->death_mutex);
 	return (i);
 }
 
@@ -84,7 +84,7 @@ void	kill(t_philo *philo)
 	if (!did_someone_died(philo))
 		printf("%ld: %d died\n", get_time() - *philo->started, philo->number);
 	pthread_mutex_unlock(philo->print_mutex);
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(philo->death_mutex);
 	*philo->someone_died = 1;
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(philo->death_mutex);
 }

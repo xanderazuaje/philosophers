@@ -16,9 +16,9 @@ int	did_someone_died(t_philo *philo)
 {
 	int	i;
 
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(philo->death_mutex);
 	i = *(philo->someone_died) == 1;
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(philo->death_mutex);
 	return (i);
 }
 

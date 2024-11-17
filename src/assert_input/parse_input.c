@@ -6,7 +6,7 @@
 /*   By: xazuaje- <xazuaje-@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:22:33 by xazuaje-          #+#    #+#             */
-/*   Updated: 2024/11/14 10:22:46 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2024/11/17 13:04:45 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	parse_input(int argc, char **argv, t_program *program)
 	while (i < total_philo && total_philo != 0)
 	{
 		program->philos[i].number = i + 1;
+		program->philos[i].death_mutex = &program->death_mutex;
 		program->philos[i].someone_died = &program->died;
 		program->philos[i].started = &program->started;
 		program->philos[i].total_eat_count = 0;
