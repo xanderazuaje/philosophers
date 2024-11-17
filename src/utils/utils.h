@@ -23,6 +23,6 @@
 
 int		ft_atoi(const char *str);
 time_t	get_time(void);
-void	fake_sleep(t_philo *philo, time_t time, int is_eating);
+void	fake_sleep(t_philo *philo, time_t time);
 
 #endif

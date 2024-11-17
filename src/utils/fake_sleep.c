@@ -13,14 +13,14 @@
 #include "utils.h"
 #include "../philo.h"
 
-void	fake_sleep(t_philo *philo, time_t time, int is_eating)
+void	fake_sleep(t_philo *philo, time_t time)
 {
 	time_t	started;
 
 	started = get_time();
 	while (get_time() - started < time)
 	{
-		if (!is_eating && must_die(philo))
+		if (must_die(philo))
 		{
 			kill(philo);
 			return;
